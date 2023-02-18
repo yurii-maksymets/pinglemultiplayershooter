@@ -8,3 +8,4 @@ Content/Collection/*
 .vs*
 Plugins/**/Intermediate/*
 Plugins/**/Binaries/*
+Build/*

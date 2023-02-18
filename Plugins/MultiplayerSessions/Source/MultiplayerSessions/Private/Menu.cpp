@@ -45,6 +45,7 @@ void UMenu::SetupMenu(int32 NumberOfPublicConnections, FString TypeOfMatch, int3
 		MultiplayerSessionsSubsystem->MultiplayerOnDestroySessionComplete.AddDynamic(this, &ThisClass::OnDestroySession);
 	}
 	FWorldDelegates::LevelRemovedFromWorld.AddUObject(this, &UMenu::OnLevelRemovedFromWorld);
+	HostButton->SetIsEnabled(false);
 }
 
 bool UMenu::Initialize()
