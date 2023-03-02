@@ -7,7 +7,6 @@
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
-
 	const int32 NumberOfPlayers = GameState.Get()->PlayerArray.Num();
 	if (NumberOfPlayers == 2)
 	{
@@ -15,7 +14,7 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		if (World)
 		{
 			bUseSeamlessTravel = true;
-			World->ServerTravel(FString("/Game/Maps/BlasterMap?listen"));
+			World->ServerTravel(FString("/Game/Maps/Arena1?listen"));
 		}
 	}
 }
