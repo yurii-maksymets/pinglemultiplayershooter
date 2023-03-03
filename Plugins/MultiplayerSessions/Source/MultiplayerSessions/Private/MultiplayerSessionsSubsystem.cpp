@@ -57,7 +57,12 @@ void UMultiplayerSessionsSubsystem::CreateSession(int32 NumPublicConnections, FS
 	// Check the session, if created in failure, then remove the delegate from the delegate list ('OnCreateSessionComplete' won't be called)
 	// and we broadcast the custom delegate.
 	// These operations will also be done when we created the session successfully, but here we do is just for 'early time'
-	if (!OnlineSessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, *LastSessionSettings))
+	bool Result;
+	if(LocalPlayer)
+		Result = OnlineSessionInterface->CreateSession(*LocalPlayer->GetPreferredUniqueNetId(), NAME_GameSession, *LastSessionSettings);
+	else
+		Result = OnlineSessionInterface->CreateSession(0, NAME_GameSession, *LastSessionSettings);
+	if(!Result)
 	{
 		OnlineSessionInterface->ClearOnCreateSessionCompleteDelegate_Handle(CreateSessionCompleteDelegateHandle);
 		// Broadcast our own custom delegate
