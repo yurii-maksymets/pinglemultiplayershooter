@@ -37,4 +37,5 @@ public:
 	FString LobbyPath{ "/Game/Maps/Lobby" };
 	UPROPERTY()
 	class UMultiplayerSessionsSubsystem* MultiplayerSessionsSubsystem;
+	TSet <class AShooterPlayerController*> PControllers;
 };

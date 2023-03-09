@@ -354,3 +354,22 @@ void AShooterPlayerController::JoinMidGame(float LevelStarting, float Warmup, fl
 	// player should be notified which game state is now going on.
 	OnMatchStateSet(MatchState);
 }
+
+void AShooterPlayerController::StartLocalTimer_Implementation()
+{
+	if (GetLocalRole() == ENetRole::ROLE_AutonomousProxy)
+	{
+		FTimerHandle TH;
+		FTimerDelegate TD;
+		TD.BindLambda([&]
+			{
+				auto hud = dynamic_cast<AShooterHUD*>(GetHUD());
+				if (hud)
+				{
+					if (hud->GetAnnouncement())
+						hud->GetAnnouncement()->StartTimer(5.f);
+				}
+		});
+		GetWorld()->GetTimerManager().SetTimer(TH, TD, 0.5f, false);
+	}
+}

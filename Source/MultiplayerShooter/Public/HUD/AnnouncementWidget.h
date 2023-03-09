@@ -15,15 +15,18 @@ class MULTIPLAYERSHOOTER_API UAnnouncementWidget : public UUserWidget
 	GENERATED_BODY()
 	
 public:
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* TimeText;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Announce_0;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Announce_1;
 
-	UPROPERTY(meta = (BindWidget))
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* WinText;
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartTimer(float StartTime = 0.f);
 };

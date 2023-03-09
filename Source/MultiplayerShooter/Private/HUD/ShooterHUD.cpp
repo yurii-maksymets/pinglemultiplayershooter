@@ -30,7 +30,6 @@ void AShooterHUD::DrawHUD()
 void AShooterHUD::BeginPlay()
 {
 	Super::BeginPlay();
-
 	AddAnnouncement();
 }
 
@@ -53,7 +52,7 @@ void AShooterHUD::AddAnnouncement()
 	if (AnnouncementClass)
 	{
 		Announcement = CreateWidget<UAnnouncementWidget>(GetWorld(), AnnouncementClass, FName("Announcement"));
-		if (!Announcement) return;
+		if (!Announcement)	return;
 		
 		Announcement->AddToViewport();
 	}

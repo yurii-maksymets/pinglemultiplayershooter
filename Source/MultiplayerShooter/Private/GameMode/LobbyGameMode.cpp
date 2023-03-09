@@ -4,10 +4,14 @@
 #include "GameMode/LobbyGameMode.h"
 #include "GameFramework/GameState.h"
 #include "MultiplayerSessionsSubsystem.h"
+#include "PlayerController/ShooterPlayerController.h"
 
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
+	if (Cast<AShooterPlayerController>(NewPlayer))
+		PControllers.Add(Cast<AShooterPlayerController>(NewPlayer));
+
 	const int32 NumberOfPlayers = GameState.Get()->PlayerArray.Num();
 	if (NumberOfPlayers == 2)
 	{
@@ -15,7 +19,17 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		if (World)
 		{
 			bUseSeamlessTravel = true;
-			World->ServerTravel(FString("/Game/Maps/Arena1?listen"));
+			for (AShooterPlayerController* pc : PControllers)
+				if (pc)	pc->StartLocalTimer();
+
+			FTimerHandle TH;
+			FTimerDelegate TD;
+			TD.BindLambda([this]
+				{
+					GetWorld()->ServerTravel(FString("/Game/Maps/Arena1"));
+				}
+			);
+			GetWorld()->GetTimerManager().SetTimer(TH, TD, 7.f, false);
 		}
 	}
 }
@@ -44,10 +58,6 @@ void ALobbyGameMode::SetupDedicated(int32 NumberOfPublicConnections, FString Typ
 		if (MultiplayerSessionsSubsystem)
 		{
 			MultiplayerSessionsSubsystem->CreateSession(NumPublicConnections, MatchType);
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("No Subsystem found."));
 		}
 	}
 }

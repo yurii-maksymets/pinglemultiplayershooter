@@ -46,6 +46,9 @@ public:
 	/** Once the game mode's MatchState is changed, the player controller's MatchState callback is going to be executed. */
 	void OnMatchStateSet(FName State);
 
+	UFUNCTION(Client, Reliable)
+	void StartLocalTimer();
+
 private:
 	UPROPERTY()
 	class AShooterHUD* ShooterHUD;
@@ -95,4 +98,5 @@ private:
 
 	UFUNCTION()
 	void JoinMidGame(float LevelStarting, float Warmup, float Match, float Cooldown, FName State);
+
 };
