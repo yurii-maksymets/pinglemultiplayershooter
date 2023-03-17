@@ -6,6 +6,12 @@
 #include "MultiplayerSessionsSubsystem.h"
 #include "PlayerController/ShooterPlayerController.h"
 
+ALobbyGameMode::ALobbyGameMode() : Super()
+{
+	TimeInLobby = 5.f;
+	LobbyTime = 5;
+}
+
 void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
@@ -19,17 +25,21 @@ void ALobbyGameMode::PostLogin(APlayerController* NewPlayer)
 		if (World)
 		{
 			bUseSeamlessTravel = true;
-			for (AShooterPlayerController* pc : PControllers)
-				if (pc)	pc->StartLocalTimer();
-
 			FTimerHandle TH;
 			FTimerDelegate TD;
+			FTimerHandle TH2;
+			FTimerDelegate TD2;
 			TD.BindLambda([this]
-				{
-					GetWorld()->ServerTravel(FString("/Game/Maps/Arena1"));
-				}
-			);
-			GetWorld()->GetTimerManager().SetTimer(TH, TD, 7.f, false);
+			{
+				GetWorld()->ServerTravel(FString("/Game/Maps/Arena1"));
+			});
+			TD2.BindLambda([this]
+			{
+				for (AShooterPlayerController* pc : PControllers)
+					if (pc)	pc->StartLocalTimer(LobbyTime);
+			});
+			GetWorld()->GetTimerManager().SetTimer(TH, TD, LobbyTime, false);
+			GetWorld()->GetTimerManager().SetTimer(TH2, TD2, 0.5, false);
 		}
 	}
 }

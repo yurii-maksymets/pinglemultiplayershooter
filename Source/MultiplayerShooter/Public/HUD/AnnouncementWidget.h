@@ -19,6 +19,9 @@ public:
 	class UTextBlock* TimeText;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* GameTimeText;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* Announce_0;
 
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
@@ -29,4 +32,7 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartTimer(float StartTime = 0.f);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartMatchTimer(float CurrentTime);
 };

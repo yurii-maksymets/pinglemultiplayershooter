@@ -54,3 +54,14 @@ void AShooterGameState::HandleTopScorePlayerStates()
 	// Updating the TopScorePlayer in the HUD
 	ShooterPlayerController->UpdateTopScorePlayer();
 }
+
+void AShooterGameState::StartMatchTimer(float MatchTime)
+{
+	// MatchTimer
+	GetWorld()->GetTimerManager().SetTimer(MatchTimer, MatchTime, false);
+}
+
+float AShooterGameState::GetMatchTime()
+{
+	return GetWorld()->GetTimerManager().GetTimerRemaining(MatchTimer);
+}

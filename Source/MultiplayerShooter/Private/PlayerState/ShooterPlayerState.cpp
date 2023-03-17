@@ -24,4 +24,3 @@ void AShooterPlayerState::UpdateDefeats()
 	
 	ShooterPlayerController->UpdatePlayerDefeats(Defeats);
 }
-

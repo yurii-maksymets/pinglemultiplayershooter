@@ -36,7 +36,6 @@ void AShooterPlayerController::Tick(float DeltaTime)
 void AShooterPlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	
 	if (AMainCharacter* MainCharacter = Cast<AMainCharacter>(InPawn))
 	{
 		MainCharacter->SetIsRespawned();
@@ -355,21 +354,37 @@ void AShooterPlayerController::JoinMidGame(float LevelStarting, float Warmup, fl
 	OnMatchStateSet(MatchState);
 }
 
-void AShooterPlayerController::StartLocalTimer_Implementation()
+void AShooterPlayerController::StartLocalTimer_Implementation(int32 CountDownLobby)
 {
 	if (GetLocalRole() == ENetRole::ROLE_AutonomousProxy)
 	{
 		FTimerHandle TH;
 		FTimerDelegate TD;
-		TD.BindLambda([&]
+		auto hud = Cast<AShooterHUD>(GetHUD());
+		if (hud)
+		{
+			AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState());
+			if (hud->GetAnnouncement() && GameState)
 			{
-				auto hud = dynamic_cast<AShooterHUD*>(GetHUD());
-				if (hud)
-				{
-					if (hud->GetAnnouncement())
-						hud->GetAnnouncement()->StartTimer(5.f);
-				}
-		});
-		GetWorld()->GetTimerManager().SetTimer(TH, TD, 0.5f, false);
+				hud->GetAnnouncement()->StartTimer(CountDownLobby);
+			}
+		}
 	}
+}
+
+void AShooterPlayerController::StartLocalMatchTimer_Implementation()
+{
+	
+	if (GetLocalRole() == ENetRole::ROLE_AutonomousProxy)
+	{
+		FTimerHandle TH;
+		FTimerDelegate TD;
+		TD.BindLambda([this]{
+			auto ann = Cast<AShooterHUD>(GetHUD())->GetAnnouncement();
+			if (ann)
+				ann->StartMatchTimer(12.f);
+		});
+		GetWorldTimerManager().SetTimer(TH, TD, 0.5f, false);
+	}
+
 }

@@ -28,4 +28,5 @@ private:
 
 	UPROPERTY()
 	class AShooterPlayerController* ShooterPlayerController;
+
 };

@@ -15,6 +15,7 @@ class MULTIPLAYERSHOOTER_API ALobbyGameMode : public AGameMode
 	GENERATED_BODY()
 
 public:
+	ALobbyGameMode();
 	virtual void PostLogin(APlayerController* NewPlayer) override;
 
 	UFUNCTION(BlueprintCallable)
@@ -38,4 +39,8 @@ public:
 	UPROPERTY()
 	class UMultiplayerSessionsSubsystem* MultiplayerSessionsSubsystem;
 	TSet <class AShooterPlayerController*> PControllers;
+	UPROPERTY(EditDefaultsOnly)
+	float TimeInLobby{5};
+	UPROPERTY(EditDefaultsOnly)
+	int32 LobbyTime;
 };

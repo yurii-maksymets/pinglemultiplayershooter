@@ -17,7 +17,10 @@ class MULTIPLAYERSHOOTER_API AShooterGameState : public AGameState
 public:
 	/** Once a player is eliminated, we then need to update the array: TopScorePlayerStates and update the TopScore player in the HUD */
 	void UpdateTopScorePlayerStates(class AShooterPlayerState* PlayerState);
-
+	UFUNCTION(BlueprintCallable)
+	void StartMatchTimer(float MatchTime = 5.f);
+	UFUNCTION(BlueprintCallable)
+	float GetMatchTime();
 
 private:
 	UPROPERTY()
@@ -32,6 +35,7 @@ private:
 
 	/** The common code within OnRep_TopScorePlayerStates() */
 	void HandleTopScorePlayerStates();
+	FTimerHandle MatchTimer;
 
 public:
 	FORCEINLINE float GetTopScore() const { return TopScore; }

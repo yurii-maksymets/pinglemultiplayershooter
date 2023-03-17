@@ -47,7 +47,10 @@ public:
 	void OnMatchStateSet(FName State);
 
 	UFUNCTION(Client, Reliable)
-	void StartLocalTimer();
+	void StartLocalTimer(int32 CountDownLobby);
+
+	UFUNCTION(Client, Reliable)
+	void StartLocalMatchTimer();
 
 private:
 	UPROPERTY()
@@ -98,5 +101,6 @@ private:
 
 	UFUNCTION()
 	void JoinMidGame(float LevelStarting, float Warmup, float Match, float Cooldown, FName State);
+
 
 };
