@@ -9,6 +9,12 @@
 #include "PlayerController/ShooterPlayerController.h"
 #include "PlayerState/ShooterPlayerState.h"
 
+void AShooterGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AShooterGameState, MatchTimer);
+}
+
 void AShooterGameState::UpdateTopScorePlayerStates(AShooterPlayerState* PlayerState)
 {
 	if (!PlayerState) return;
@@ -57,11 +63,10 @@ void AShooterGameState::HandleTopScorePlayerStates()
 
 void AShooterGameState::StartMatchTimer(float MatchTime)
 {
-	// MatchTimer
-	GetWorld()->GetTimerManager().SetTimer(MatchTimer, MatchTime, false);
+	MatchTimer = MatchTime;
 }
 
 float AShooterGameState::GetMatchTime()
 {
-	return GetWorld()->GetTimerManager().GetTimerRemaining(MatchTimer);
+	return MatchTimer;
 }

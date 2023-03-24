@@ -6,22 +6,28 @@
 #include "GameState/ShooterGameState.h"
 #include "HUD/ShooterHUD.h"
 #include "HUD/AnnouncementWidget.h"
+#include "Kismet/GameplayStatics.h"
+
+AShooterMatchMode::AShooterMatchMode(): Super()
+{
+}
 
 void AShooterMatchMode::StartPlay()
 {
 	Super::StartPlay();
 	bUseSeamlessTravel = true;
-	AShooterGameState* GS = Cast<AShooterGameState>(GetWorld()->GetGameState());
-	if (GS)
-	{
-		GS->StartMatchTimer(MatchPlayTime);
-	}
-	else
-		UE_LOG(LogTemp, Warning, TEXT("No Game State yet"));
 	FTimerHandle TH;
 	FTimerDelegate TD;
+	FTimerHandle TH2;
+	FTimerDelegate TD2;
+	TD2.BindLambda([&]{
+		AShooterGameState* GS = Cast<AShooterGameState>(GetWorld()->GetGameState());
+		GS->StartMatchTimer(MatchPlayTime);
+	});
+	GetWorldTimerManager().SetTimer(TH2, TD2, 1.f, false);
 	TD.BindLambda([this]{FinishGame();});
 	GetWorldTimerManager().SetTimer(TH, TD, MatchPlayTime, false);
+
 }
 
 void AShooterMatchMode::PostLogin(APlayerController* PlayerController)
@@ -50,8 +56,18 @@ void AShooterMatchMode::HandleStartingNewPlayer(APlayerController* NewPlayer)
 
 void AShooterMatchMode::FinishGame()
 {
-	FString map = MapsAllowed.Pop();
+	FString map = MapsAllowed[0];
+	MapsAllowed.RemoveAt(0);
 	UE_LOG(LogTemp, Warning, TEXT("FINISH GAME %s"), *map);
 	MapsAllowed.Add(map);
 	GetWorld()->ServerTravel(FString("/Game/Maps/").Append(map), false);
+}
+
+void AShooterMatchMode::Tick(float Delta)
+{
+	Super::Tick(Delta);
+	float& Time = Cast<AShooterGameState>(GetWorld()->GetGameState())->MatchTimer;
+	if (Time > 0)
+		Time-=Delta;
+
 }

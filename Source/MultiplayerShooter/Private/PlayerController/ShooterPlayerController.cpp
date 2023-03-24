@@ -358,15 +358,13 @@ void AShooterPlayerController::StartLocalTimer_Implementation(int32 CountDownLob
 {
 	if (GetLocalRole() == ENetRole::ROLE_AutonomousProxy)
 	{
-		FTimerHandle TH;
-		FTimerDelegate TD;
-		auto hud = Cast<AShooterHUD>(GetHUD());
-		if (hud)
+		AShooterHUD* PlayerHUD = Cast<AShooterHUD>(GetHUD());
+		if (PlayerHUD)
 		{
 			AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState());
-			if (hud->GetAnnouncement() && GameState)
+			if (PlayerHUD->GetAnnouncement() && GameState)
 			{
-				hud->GetAnnouncement()->StartTimer(CountDownLobby);
+				PlayerHUD->GetAnnouncement()->StartTimer(CountDownLobby);
 			}
 		}
 	}
@@ -374,17 +372,25 @@ void AShooterPlayerController::StartLocalTimer_Implementation(int32 CountDownLob
 
 void AShooterPlayerController::StartLocalMatchTimer_Implementation()
 {
-	
 	if (GetLocalRole() == ENetRole::ROLE_AutonomousProxy)
 	{
 		FTimerHandle TH;
 		FTimerDelegate TD;
 		TD.BindLambda([this]{
+			AShooterGameState* GameState = Cast<AShooterGameState>(GetWorld()->GetGameState());
 			auto ann = Cast<AShooterHUD>(GetHUD())->GetAnnouncement();
-			if (ann)
-				ann->StartMatchTimer(12.f);
+			if (ann && GameState)
+			{
+				float time = GameState->GetMatchTime();
+				ann->StartMatchTimer(time);
+			}
 		});
-		GetWorldTimerManager().SetTimer(TH, TD, 0.5f, false);
+		GetWorldTimerManager().SetTimer(TH, TD, 1.f, false);
 	}
+
+}
+
+void AShooterPlayerController::WriteDownLocalTime_Implementation()
+{
 
 }

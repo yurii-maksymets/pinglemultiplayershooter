@@ -35,9 +35,11 @@ private:
 
 	/** The common code within OnRep_TopScorePlayerStates() */
 	void HandleTopScorePlayerStates();
-	FTimerHandle MatchTimer;
 
 public:
 	FORCEINLINE float GetTopScore() const { return TopScore; }
 	 FORCEINLINE const TArray<class AShooterPlayerState*>& GetTopScorePlayerStates() const { return TopScorePlayerStates; }
+	 virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	UPROPERTY(Replicated)
+	float MatchTimer;
 };

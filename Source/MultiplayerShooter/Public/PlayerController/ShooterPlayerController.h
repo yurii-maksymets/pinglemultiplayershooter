@@ -52,6 +52,9 @@ public:
 	UFUNCTION(Client, Reliable)
 	void StartLocalMatchTimer();
 
+	UFUNCTION(Client, Reliable)
+	void WriteDownLocalTime();
+
 private:
 	UPROPERTY()
 	class AShooterHUD* ShooterHUD;
