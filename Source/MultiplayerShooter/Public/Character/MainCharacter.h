@@ -200,6 +200,11 @@ public:
 	bool IsAiming() const;
 
 	UFUNCTION(BlueprintCallable)
+	float GetHealth() const;
+	UFUNCTION(BlueprintCallable)
+	float GetMaxHealth() const;
+
+	UFUNCTION(BlueprintCallable)
 	UCombatComponent* GetCombat() const { return Combat; }
 	
 	FORCEINLINE float GetAO_Yaw() const { return AO_Yaw; }
@@ -209,8 +214,6 @@ public:
 	FORCEINLINE ETurningInPlace GetTuringInPlace() const { return TurningInPlace; }
 	bool IsFireButtonPressed() const;
 	FORCEINLINE UCameraComponent* GetFollowCamera() const { return FollowCamera; }
-	FORCEINLINE float GetHealth() const { return Health; }
-	FORCEINLINE float GetMaxHealth() const { return MaxHealth; }
 	void SetHealth(const float HealthValue);
 	void HandleHealth(const bool IsHealthUp);
 	FORCEINLINE void SetMaxHealth(const float MaxHealthValue) { MaxHealth = MaxHealthValue; }

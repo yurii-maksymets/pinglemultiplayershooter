@@ -662,3 +662,11 @@ void AMainCharacter::SetCombatState(ECombatState State)
 		Combat->SetCombatState(State);
 	}
 }
+
+float AMainCharacter::GetHealth() const
+ { return Health; }
+
+float AMainCharacter::GetMaxHealth() const
+{
+	return MaxHealth;
+}

@@ -385,7 +385,7 @@ void AShooterPlayerController::StartLocalMatchTimer_Implementation()
 				ann->StartMatchTimer(time);
 			}
 		});
-		GetWorldTimerManager().SetTimer(TH, TD, 1.f, false);
+		GetWorldTimerManager().SetTimer(TH, TD, 1.5f, false);
 	}
 
 }
