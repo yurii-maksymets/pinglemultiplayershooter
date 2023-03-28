@@ -35,6 +35,7 @@ APickup::APickup()
 	// Stencil -- Outline effect
 	PickupMesh->SetRenderCustomDepth(true);
 	PickupMesh->SetCustomDepthStencilValue(DEPTH_BLUE);
+	SetReplicates(true);
 }
 
 void APickup::Tick(float DeltaTime)
@@ -62,14 +63,15 @@ void APickup::BeginPlay()
 
 void APickup::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor))
+	AMainCharacter* MainCharacter = Cast<AMainCharacter>(OtherActor);
+	if (MainCharacter && GetLocalRole() == ENetRole::ROLE_Authority)
 	{
 		SpawnBuffEffectAttached(MainCharacter);
 		Destroy();
 	}
 }
 
-void APickup::SpawnBuffEffectAttached(AMainCharacter* AttachedCharacter) const
+void APickup::SpawnBuffEffectAttached_Implementation(AMainCharacter* AttachedCharacter) const
 {
 	if (NiagaraEffect && AttachedCharacter && AttachedCharacter->GetMesh())
 	{
