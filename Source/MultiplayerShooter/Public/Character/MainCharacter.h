@@ -44,6 +44,7 @@ private:
 	void ThrowButtonPressed();
 
 public:
+	UFUNCTION(Client, Unreliable)
 	void SetOverlappingWeapon(class AWeapon* Weapon);
 	void PlayFireMontage(bool bAiming) const;
 	void PlayReloadMontage() const;
@@ -53,6 +54,13 @@ public:
 	/* Display the sniper scope effect when aiming. */
 	UFUNCTION(BlueprintImplementableEvent)
 	void ShowSniperScopeWidget(bool bShowScope);
+	UFUNCTION(Server, Unreliable)
+	void EquipWeaponSrv(AWeapon* EquipWeapon);
+	UFUNCTION(NetMulticast, Unreliable)
+	void EquipWeaponMulticast(AWeapon* EquipWeapon);
+
+	UPROPERTY()
+	class AWeapon* OverlappingWeapon;
 	
 private:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
@@ -66,9 +74,6 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
 	class UWidgetComponent* OverheadWidget;
-
-	UPROPERTY()
-	class AWeapon* OverlappingWeapon;
 
 	UPROPERTY(VisibleAnywhere)
 	class UCombatComponent* Combat;

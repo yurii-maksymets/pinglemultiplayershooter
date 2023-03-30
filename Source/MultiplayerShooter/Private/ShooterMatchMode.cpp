@@ -68,6 +68,6 @@ void AShooterMatchMode::Tick(float Delta)
 {
 	Super::Tick(Delta);
 	float& Time = Cast<AShooterGameState>(GetWorld()->GetGameState())->MatchTimer;
-	if (Time > 0)
-		Time-=Delta;
+	if (Time > 0.f)
+		Time -= Delta;
 }

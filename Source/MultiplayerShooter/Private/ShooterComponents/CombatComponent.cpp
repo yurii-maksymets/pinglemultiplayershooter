@@ -58,6 +58,7 @@ void UCombatComponent::UpdateCharacterSpeed()
 	}
 }
 
+//void UCombatComponent::EquipWeapon_Implementation(AWeapon* WeaponToEquip)
 void UCombatComponent::EquipWeapon(AWeapon* WeaponToEquip)
 {
 	if (!MainCharacter || !WeaponToEquip) return;

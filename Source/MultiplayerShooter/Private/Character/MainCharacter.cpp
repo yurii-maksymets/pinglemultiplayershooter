@@ -472,9 +472,22 @@ void AMainCharacter::LookUpAtRate(float Value)
 
 void AMainCharacter::EquipButtonPressed()
 {
+	EquipWeaponSrv(OverlappingWeapon);
+}
+
+void AMainCharacter::EquipWeaponSrv_Implementation(AWeapon* WeaponEquip)
+{
+	if (Combat && GetLocalRole() == ENetRole::ROLE_Authority)
+	{
+		EquipWeaponMulticast(WeaponEquip);
+	}
+}
+
+void AMainCharacter::EquipWeaponMulticast_Implementation(AWeapon* WeaponEquip)
+{
 	if (Combat)
 	{
-		Combat->EquipWeapon(OverlappingWeapon);
+		Combat->EquipWeapon(WeaponEquip);
 	}
 }
 
@@ -562,7 +575,7 @@ void AMainCharacter::PostInitializeComponents()
 	}
 }
 
-void AMainCharacter::SetOverlappingWeapon(AWeapon* Weapon)
+void AMainCharacter::SetOverlappingWeapon_Implementation(AWeapon* Weapon)
 {
 	// When the overlap ends, we should hide the PickupWidget's text. To make that, we need firstly 'ShowPickupWidget(false)' before we assign the
 	// Weapon (Weapon == nullptr when overlap ends) to the OverlappingWeapon. Otherwise, we have no chance to change the PickupWidget's text.

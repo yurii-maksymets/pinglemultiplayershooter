@@ -8,13 +8,15 @@
 #include "Character/MainCharacter.h"
 #include "ShooterComponents/CombatComponent.h"
 #include "PlayerController/ShooterPlayerController.h"
+#include "Character/MainCharacter.h"
+#include "Kismet/GameplayStatics.h"
 
 // The DrawHUD function will be automatically called when we set the default HUD as BP_ShooterHUD in BP_GameMode settings.
 void AShooterHUD::DrawHUD()
 {
 	Super::DrawHUD();
-	
-	if (GEngine && GEngine->GameViewport)
+	AMainCharacter* PlayerCharacter = Cast<AMainCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
+	if (GEngine && GEngine->GameViewport && PlayerCharacter && PlayerCharacter->IsAiming())
 	{
 		FVector2D ViewportSize;
 		GEngine->GameViewport->GetViewportSize(ViewportSize);
