@@ -507,6 +507,16 @@ void AMainCharacter::CrouchButtonPressed()
 
 void AMainCharacter::AimButtonPressed()
 {
+	AimButtonPressedServer();
+}
+
+void AMainCharacter::AimButtonPressedServer_Implementation()
+{
+	AimButtonPressedMulticast();
+}
+
+void AMainCharacter::AimButtonPressedMulticast_Implementation()
+{
 	if (Combat)
 	{
 		Combat->SetAiming(true);
@@ -514,6 +524,16 @@ void AMainCharacter::AimButtonPressed()
 }
 
 void AMainCharacter::AimButtonReleased()
+{
+	AimButtonReleasedServer();
+}
+
+void AMainCharacter::AimButtonReleasedServer_Implementation()
+{
+	AimButtonReleasedMulticast();
+}
+
+void AMainCharacter::AimButtonReleasedMulticast_Implementation()
 {
 	if (Combat)
 	{
@@ -523,6 +543,16 @@ void AMainCharacter::AimButtonReleased()
 
 void AMainCharacter::FireButtonPressed()
 {
+	FireButtonPressedServer();
+}
+
+void AMainCharacter::FireButtonPressedServer_Implementation()
+{
+	FireButtonPressedMulticast();
+}
+
+void AMainCharacter::FireButtonPressedMulticast_Implementation()
+{
 	if (Combat)
 	{
 		Combat->FireButtonPressed(true);
@@ -530,6 +560,16 @@ void AMainCharacter::FireButtonPressed()
 }
 
 void AMainCharacter::FireButtonReleased()
+{
+	FireButtonReleasedServer();
+}
+
+void AMainCharacter::FireButtonReleasedServer_Implementation()
+{
+	FireButtonReleasedMulticast();
+}
+
+void AMainCharacter::FireButtonReleasedMulticast_Implementation()
 {
 	if (Combat)
 	{

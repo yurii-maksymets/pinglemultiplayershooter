@@ -36,9 +36,25 @@ private:
 	virtual void Jump() override;
 	void CrouchButtonPressed();
 	void AimButtonPressed();
+	UFUNCTION(Server, Unreliable)
+	void AimButtonPressedServer();
+	UFUNCTION(NetMulticast, Unreliable)
+	void AimButtonPressedMulticast();
 	void AimButtonReleased();
+	UFUNCTION(NetMulticast, Unreliable)
+	void AimButtonReleasedMulticast();
+	UFUNCTION(Server, Unreliable)
+	void AimButtonReleasedServer();
 	void FireButtonPressed();
+	UFUNCTION(Server, Unreliable)
+	void FireButtonPressedServer();
+	UFUNCTION(NetMulticast, Unreliable)
+	void FireButtonPressedMulticast();
 	void FireButtonReleased();
+	UFUNCTION(Server, Unreliable)
+	void FireButtonReleasedServer();
+	UFUNCTION(NetMulticast, Unreliable)
+	void FireButtonReleasedMulticast();
 	void SwitchFireModeButtonPressed();
 	void ReloadButtonPressed();
 	void ThrowButtonPressed();
