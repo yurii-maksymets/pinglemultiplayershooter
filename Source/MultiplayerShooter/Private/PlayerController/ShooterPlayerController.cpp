@@ -92,27 +92,27 @@ void AShooterPlayerController::DisplayDefeatedMsg()
 void AShooterPlayerController::UpdateWeaponAmmo(int32 AmmoAmount)
 {
 	ShooterHUD = ShooterHUD ? ShooterHUD : Cast<AShooterHUD>(GetHUD());
-	if (!ShooterHUD || !ShooterHUD->GetCharacterOverlay() || !ShooterHUD->GetCharacterOverlay()->WeaponAmmoAmount) return;
+	if (!ShooterHUD || !ShooterHUD->GetAnnouncement() || !ShooterHUD->GetAnnouncement()->WeaponAmmoAmount) return;
 	
 	const FString AmmoText = FString::Printf(TEXT("%d"), AmmoAmount);
-	ShooterHUD->GetCharacterOverlay()->WeaponAmmoAmount->SetText(FText::FromString(AmmoText));
+	ShooterHUD->GetAnnouncement()->WeaponAmmoAmount->SetText(FText::FromString(AmmoText));
 }
 
 void AShooterPlayerController::UpdateCarriedAmmo(int32 AmmoAmount)
 {
 	ShooterHUD = ShooterHUD ? ShooterHUD : Cast<AShooterHUD>(GetHUD());
-	if (!ShooterHUD || !ShooterHUD->GetCharacterOverlay() || !ShooterHUD->GetCharacterOverlay()->CarriedAmmoAmount) return;
+	if (!ShooterHUD || !ShooterHUD->GetAnnouncement() || !ShooterHUD->GetAnnouncement()->CarriedAmmoAmount) return;
 	
 	const FString AmmoText = FString::Printf(TEXT("%d"), AmmoAmount);
-	ShooterHUD->GetCharacterOverlay()->CarriedAmmoAmount->SetText(FText::FromString(AmmoText));
+	ShooterHUD->GetAnnouncement()->CarriedAmmoAmount->SetText(FText::FromString(AmmoText));
 }
 
 void AShooterPlayerController::UpdateWeaponType(const FString& WeaponType)
 {
 	ShooterHUD = ShooterHUD ? ShooterHUD : Cast<AShooterHUD>(GetHUD());
-	if (!ShooterHUD || !ShooterHUD->GetCharacterOverlay() || !ShooterHUD->GetCharacterOverlay()->WeaponType) return;
+	if (!ShooterHUD || !ShooterHUD->GetAnnouncement() || !ShooterHUD->GetAnnouncement()->WeaponType) return;
 	
-	ShooterHUD->GetCharacterOverlay()->WeaponType->SetText(FText::FromString(WeaponType));
+	ShooterHUD->GetAnnouncement()->WeaponType->SetText(FText::FromString(WeaponType));
 }
 
 void AShooterPlayerController::UpdateGrenade(int32 GrenadeAmount)

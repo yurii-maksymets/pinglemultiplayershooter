@@ -57,6 +57,10 @@ private:
 	void FireButtonReleasedMulticast();
 	void SwitchFireModeButtonPressed();
 	void ReloadButtonPressed();
+	UFUNCTION(Server, Unreliable)
+	void ReloadButtonPressedServer();
+	UFUNCTION(NetMulticast, Unreliable)
+	void ReloadButtonPressedMulticast();
 	void ThrowButtonPressed();
 
 public:

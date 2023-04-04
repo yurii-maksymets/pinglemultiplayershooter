@@ -30,6 +30,15 @@ public:
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
 	class UTextBlock* WinText;
 
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* WeaponType;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* WeaponAmmoAmount;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidget))
+	class UTextBlock* CarriedAmmoAmount;
+
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartTimer(float StartTime = 0.f);
 

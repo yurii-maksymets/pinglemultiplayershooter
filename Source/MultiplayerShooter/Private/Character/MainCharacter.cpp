@@ -587,6 +587,16 @@ void AMainCharacter::SwitchFireModeButtonPressed()
 
 void AMainCharacter::ReloadButtonPressed()
 {
+	ReloadButtonPressedServer();
+}
+
+void AMainCharacter::ReloadButtonPressedServer_Implementation()
+{
+	ReloadButtonPressedMulticast();
+}
+
+void AMainCharacter::ReloadButtonPressedMulticast_Implementation()
+{
 	if (Combat)
 	{
 		Combat->Reload();

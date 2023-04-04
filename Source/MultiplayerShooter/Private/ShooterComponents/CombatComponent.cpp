@@ -276,7 +276,7 @@ void UCombatComponent::ReloadAnimNotify()
 	 * authority here, or the client will immediately call Fire() while the Ammo is not updated. */
 	MainCharacter->SetCombatState(ECombatState::ECS_Unoccupied);
 	ReloadAmmoAmount();	// Ammo and CarriedAmmo Rep Notify triggered.
-	
+	HandleCarriedAmmo();
 	// Local variable, so we needn't check IsLocallyControlled().
 	if (bFireButtonPressed && bAutomaticFire) Fire();
 }
