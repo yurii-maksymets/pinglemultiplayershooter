@@ -16,17 +16,24 @@ AProjectileBullet::AProjectileBullet()
 
 void AProjectileBullet::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	UE_LOG(LogTemp, Warning, TEXT("AProjectileBullet::OnHit%s: %d"), *OtherActor->GetName(), OtherActor->GetLocalRole());
+	/*
 	// The Owner/Instigator is set in SpawnParams when we spawn the projectile
 	const APawn* ProjectileInstigator = GetInstigator();
-	if (!ProjectileInstigator) return;
+	//if (!ProjectileInstigator) return;
 
 	// If we hit ourselves, it'll not trigger the HitImpact.
 	if (OtherActor == GetOwner()) return;
 
 	// ApplyDamage logic
-	UGameplayStatics::ApplyDamage(OtherActor, Damage, ProjectileInstigator->GetController(), this, UDamageType::StaticClass());
+	UE_LOG(LogTemp, Warning, TEXT("Apply damage: %.2f, %d"), Damage, UGameplayStatics::GetPlayerPawn(GetWorld(), 0)==OtherActor);
+	if(UGameplayStatics::GetPlayerPawn(GetWorld(), 0) != OtherActor)
+		UGameplayStatics::ApplyDamage(OtherActor, Damage, nullptr, this, UDamageType::StaticClass());
+	else
+		return;
 	
 	// Destroy() will be called, so Super::OnHit should be called at last.
+	*/
 	Super::OnHit(HitComponent, OtherActor, OtherComp, NormalImpulse, Hit);
 }
 

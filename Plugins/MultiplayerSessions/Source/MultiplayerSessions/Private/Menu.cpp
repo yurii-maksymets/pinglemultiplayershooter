@@ -45,6 +45,7 @@ void UMenu::SetupMenu(int32 NumberOfPublicConnections, FString TypeOfMatch, int3
 		MultiplayerSessionsSubsystem->MultiplayerOnDestroySessionComplete.AddDynamic(this, &ThisClass::OnDestroySession);
 	}
 	FWorldDelegates::LevelRemovedFromWorld.AddUObject(this, &UMenu::OnLevelRemovedFromWorld);
+	HostButton->SetIsEnabled(false);
 }
 
 bool UMenu::Initialize()
@@ -55,12 +56,13 @@ bool UMenu::Initialize()
 	}
 	if (HostButton)
 	{
-		HostButton->OnClicked.AddDynamic(this, &ThisClass::HostButtonClicked);
+		//HostButton->OnClicked.AddDynamic(this, &ThisClass::HostButtonClicked);
 	}
 	if (JoinButton)
 	{
 		JoinButton->OnClicked.AddDynamic(this, &ThisClass::JoinButtonClicked);
 	}
+	HostButton->SetIsEnabled(false);
 	return true;
 }
 

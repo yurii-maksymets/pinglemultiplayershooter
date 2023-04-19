@@ -55,6 +55,11 @@ public:
 	UFUNCTION(Client, Reliable)
 	void WriteDownLocalTime();
 
+	UFUNCTION(Server, Reliable)
+	virtual void FireBulletServer(TSubclassOf<class AProjectile> ProjectileClass, FVector Location, FRotator Rotation, AActor* OtherActor);
+	UFUNCTION(NetMulticast, Reliable)
+	virtual void FireBulletMulticast(TSubclassOf<AProjectile> ProjectileClass, FVector Location, FRotator Rotation, AActor* OtherActor);
+
 private:
 	UPROPERTY()
 	class AShooterHUD* ShooterHUD;

@@ -78,6 +78,8 @@ public:
 	void EquipWeaponSrv(AWeapon* EquipWeapon);
 	UFUNCTION(NetMulticast, Unreliable)
 	void EquipWeaponMulticast(AWeapon* EquipWeapon);
+	UFUNCTION(Client, Reliable)
+	void TakeDamageClient(float Damage, AController* InstigatedBy);
 
 	UPROPERTY()
 	class AWeapon* OverlappingWeapon;

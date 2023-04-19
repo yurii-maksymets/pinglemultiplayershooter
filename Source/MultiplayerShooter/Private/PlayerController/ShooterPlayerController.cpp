@@ -14,6 +14,7 @@
 #include "HUD/CharacterOverlay.h"
 #include "Kismet/GameplayStatics.h"
 #include "Net/UnrealNetwork.h"
+#include "Weapon/Projectile.h"
 
 void AShooterPlayerController::BeginPlay()
 {
@@ -393,4 +394,15 @@ void AShooterPlayerController::StartLocalMatchTimer_Implementation()
 void AShooterPlayerController::WriteDownLocalTime_Implementation()
 {
 
+}
+
+void AShooterPlayerController::FireBulletServer_Implementation(TSubclassOf<AProjectile> ProjectileClass, FVector Location, FRotator Rotation, AActor* OtherActor)
+{
+	FireBulletMulticast(ProjectileClass, Location, Rotation, OtherActor);
+}
+
+void AShooterPlayerController::FireBulletMulticast_Implementation(TSubclassOf<AProjectile> ProjectileClass, FVector Location, FRotator Rotation, AActor* OtherActor)
+{
+	GetWorld()->SpawnActor<AProjectile>(ProjectileClass, Location, Rotation);
+	if(OtherActor) UGameplayStatics::ApplyDamage(OtherActor, 10.f, nullptr, this, UDamageType::StaticClass());
 }

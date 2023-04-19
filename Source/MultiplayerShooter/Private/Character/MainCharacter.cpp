@@ -255,7 +255,13 @@ void AMainCharacter::RespawnTimerFinished()
 void AMainCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDamageType* DamageType, AController* InstigatedBy, AActor* DamageCauser)
 {
 	// If the character is eliminated, then directly return to avoid spam, or the character will be spawned multiple times.
+	UE_LOG(LogTemp,Warning, TEXT("Received damage: %d %s"), GetLocalRole(), *GetName() );
+	
 	if (Health <= 0.f) return;
+	if (GetLocalRole() == ENetRole::ROLE_Authority)
+	{
+		TakeDamageClient(Damage, InstigatedBy);
+	}
 	
 	SetHealth(FMath::Clamp(Health - Damage, 0.f, MaxHealth));
 	if (Health <= 0.f && GetWorld())
@@ -267,6 +273,25 @@ void AMainCharacter::ReceiveDamage(AActor* DamagedActor, float Damage, const UDa
 			ShooterGameMode->PlayerEliminated(this, ShooterPlayerController, AttackerController);
 		}
 	}
+	
+}
+
+void AMainCharacter::TakeDamageClient_Implementation(float Damage, AController* InstigatedBy)
+{
+	UE_LOG(LogTemp,Warning, TEXT("Taking damage with role: %d, %.2f"), GetLocalRole(), Health);
+	if (Health <= 0.f) return;
+
+	SetHealth(FMath::Clamp(Health - Damage, 0.f, MaxHealth));
+	/*if (Health <= 0.f && GetWorld())
+	{
+		if (AShooterGameMode* ShooterGameMode = GetWorld()->GetAuthGameMode<AShooterGameMode>())
+		{
+			ShooterPlayerController = ShooterPlayerController ? ShooterPlayerController : Cast<AShooterPlayerController>(Controller);
+			AShooterPlayerController* AttackerController = Cast<AShooterPlayerController>(InstigatedBy);
+			ShooterGameMode->PlayerEliminated(this, ShooterPlayerController, AttackerController);
+		}
+	}
+	*/
 }
 
 void AMainCharacter::SetHUDHealth()

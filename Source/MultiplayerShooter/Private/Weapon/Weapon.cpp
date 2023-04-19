@@ -8,8 +8,11 @@
 #include "Components/SphereComponent.h"
 #include "Components/WidgetComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "Net/UnrealNetwork.h"
 #include "PlayerController/ShooterPlayerController.h"
+#include "Kismet/GameplayStatics.h"
+#include "Weapon/Projectile.h"
 
 AWeapon::AWeapon()
 {
@@ -76,7 +79,39 @@ void AWeapon::Fire(const FVector& TraceHitTarget)
 	{
 		WeaponMesh->PlayAnimation(FireAnimation, false);
 	}
-	SpendRound();
+
+	if(UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetLocalRole() == ENetRole::ROLE_AutonomousProxy && WeaponOwnerCharacter == UGameplayStatics::GetPlayerCharacter(GetWorld(), 0))
+	{
+		SpendRound();
+		FVector2D Center;
+		GEngine->GameViewport->GetViewportSize(Center);
+		Center/=2;
+		FVector WorldStart, WorldDirection, WorldEnd;
+		UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), Center, WorldStart, WorldDirection);
+		WorldEnd = WorldStart + WorldDirection * 15000;
+		//DrawDebugSphere(GetWorld(), WorldEnd, 20, 10, FColor::Blue, false, 5);
+
+		FHitResult Hit;
+		TArray<FHitResult> HitArray;
+		FRotator ProjRotation;
+		FCollisionQueryParams QueryParams;
+		QueryParams.AddIgnoredActor(WeaponOwnerCharacter);
+		GetWorld()->LineTraceSingleByChannel(Hit, WorldStart, WorldEnd, ECollisionChannel::ECC_Visibility, QueryParams);
+		if (Hit.GetActor())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("%s"), *Hit.GetActor()->GetName());
+			DrawDebugSphere(GetWorld(), Hit.Location, 10, 10, FColor::Cyan, false, 1.f);
+			ProjRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Hit.Location);
+			auto con = Cast<AShooterPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+			if(con)
+				con->FireBulletServer(ProjectileClass, GetActorLocation(), ProjRotation, Hit.GetActor());
+		}
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *vec.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Local: %d, Remote: %d"), GetLocalRole(), GetRemoteRole());
+		// 
+		//GetWorld()->SpawnActor<AProjectile>(ProjectileClass, GetActorLocation(), ProjRotation);
+	}
+	
 }
 
 void AWeapon::SetWeaponState(EWeaponState State)
