@@ -89,7 +89,6 @@ void AWeapon::Fire(const FVector& TraceHitTarget)
 		FVector WorldStart, WorldDirection, WorldEnd;
 		UGameplayStatics::DeprojectScreenToWorld(UGameplayStatics::GetPlayerController(GetWorld(), 0), Center, WorldStart, WorldDirection);
 		WorldEnd = WorldStart + WorldDirection * 15000;
-		//DrawDebugSphere(GetWorld(), WorldEnd, 20, 10, FColor::Blue, false, 5);
 
 		FHitResult Hit;
 		TArray<FHitResult> HitArray;
@@ -97,19 +96,12 @@ void AWeapon::Fire(const FVector& TraceHitTarget)
 		FCollisionQueryParams QueryParams;
 		QueryParams.AddIgnoredActor(WeaponOwnerCharacter);
 		GetWorld()->LineTraceSingleByChannel(Hit, WorldStart, WorldEnd, ECollisionChannel::ECC_Visibility, QueryParams);
+		WorldEnd = WorldStart + WorldDirection * 1000;
 		if (Hit.GetActor())
-		{
-			UE_LOG(LogTemp, Warning, TEXT("%s"), *Hit.GetActor()->GetName());
-			DrawDebugSphere(GetWorld(), Hit.Location, 10, 10, FColor::Cyan, false, 1.f);
-			ProjRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Hit.Location);
-			auto con = Cast<AShooterPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
-			if(con)
-				con->FireBulletServer(ProjectileClass, GetActorLocation(), ProjRotation, Hit.GetActor());
-		}
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *vec.ToString());
-		//UE_LOG(LogTemp, Warning, TEXT("Local: %d, Remote: %d"), GetLocalRole(), GetRemoteRole());
-		// 
-		//GetWorld()->SpawnActor<AProjectile>(ProjectileClass, GetActorLocation(), ProjRotation);
+			WorldEnd = Hit.Location;
+		ProjRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), WorldEnd);
+		AShooterPlayerController* Con = Cast<AShooterPlayerController>(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		Con->FireBulletServer(ProjectileClass, GetActorLocation(), ProjRotation, Hit.GetActor());
 	}
 	
 }
